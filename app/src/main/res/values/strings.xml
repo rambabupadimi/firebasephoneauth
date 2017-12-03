@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">PhoneAuthFirebase</string>
+    <string name="verify_phone_auth">verify phone</string>
+    <string name="resend_phone_auth">RESEND OTP</string>
+    <string name="hint_phone_number">phone number</string>
+    <string name="hint_verification_code">verification code</string>
+    <string name="start_phone_auth">SEND OTP</string>
+</resources>
