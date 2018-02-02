@@ -1,8 +1,7 @@
-package com.example.ramu.chatfirebase;
+package c.com.phoneauthfirebase;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -47,16 +46,6 @@ public class SignupOrLogin extends AppCompatActivity {
             }
         });
 
-
-        signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SignupOrLogin.this,Register.class);
-                intent.putExtra("usertype","normal");
-                startActivity(intent);
-
-            }
-        });
         siginin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

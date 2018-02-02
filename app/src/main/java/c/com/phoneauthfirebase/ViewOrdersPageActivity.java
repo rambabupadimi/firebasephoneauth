@@ -1,9 +1,8 @@
-package c.com.ecomerceuser;
+package c.com.phoneauthfirebase;
 
-import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -21,13 +20,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import c.com.ecomerceuser.models.CartModel;
-import c.com.ecomerceuser.models.ItemModel;
-import c.com.ecomerceuser.models.OrderModel;
+import c.com.phoneauthfirebase.models.OrderModel;
+
 
 public class ViewOrdersPageActivity extends AppCompatActivity {
 
@@ -54,18 +54,27 @@ public class ViewOrdersPageActivity extends AppCompatActivity {
         notFoundMessage = (TextView) findViewById(R.id.not_found_text);
         notFoundMessage.setText("Your order list is empty");
 
-
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference   =  FirebaseDatabase.getInstance().getReference().child("Orders").child(firebaseUser.getUid());
+        databaseReference   =  FirebaseDatabase.getInstance().getReference().child("Orders");
 
          databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
              @Override
              public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot!=null && dataSnapshot.getChildrenCount()>0)
                 {
+                   for(DataSnapshot ds:dataSnapshot.getChildren())
+                   {
+                       ArrayList<OrderModel> orderModelList = new ArrayList<>();
+                       for(DataSnapshot ds1: ds.getChildren())
+                       {
+                          OrderModel orderModel = ds1.getValue(OrderModel.class);
+                           Log.i("tag","ds value is"+orderModel.getName());
+                                orderModelList.add(orderModel);
+                       }
+                   }
+
                     notFountLayout.setVisibility(View.GONE);
                     viewOrderRecyclerView.setVisibility(View.VISIBLE);
                 }

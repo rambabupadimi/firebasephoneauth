@@ -1,4 +1,4 @@
-package com.example.ramu.chatfirebase;
+package c.com.phoneauthfirebase;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+
+import c.com.phoneauthfirebase.models.RegisterModel;
 
 public class Register extends AppCompatActivity {
 
@@ -38,7 +40,7 @@ public class Register extends AppCompatActivity {
 
         mAuth   = FirebaseAuth.getInstance();
         progressDialog  =   new ProgressDialog(this);
-        firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+        firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("Admin");
 
         userType    =   getIntent().getStringExtra("usertype");
 
@@ -47,21 +49,21 @@ public class Register extends AppCompatActivity {
         appPreferences.setUserType(""+userType);
 
 
-        name = (EditText) findViewById(R.id.name);
-        phone = (EditText)findViewById(R.id.phone);
+  //      name = (EditText) findViewById(R.id.name);
+  //      phone = (EditText)findViewById(R.id.phone);
         password = (EditText)findViewById(R.id.password);
         register = (Button)findViewById(R.id.register);
         email   =   (EditText)findViewById(R.id.email);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String sPhone         = phone.getText().toString();
-                final String sName          = name.getText().toString();
+    //            final String sPhone         = phone.getText().toString();
+    //            final String sName          = name.getText().toString();
                 String sPassword            = password.getText().toString();
                 String sEmail               = email.getText().toString();
 
 
-                if(sPhone.length()>0 && sName.length()>0 && sPassword.length()>0 && sEmail.length() >0 ) {
+                if(sEmail.length()>0 && sEmail.length()>0 && sPassword.length()>0 && sEmail.length() >0 ) {
                     progressDialog.setMessage("Signing up...");
                     progressDialog.show();
                     mAuth.createUserWithEmailAndPassword(sEmail, sPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -81,8 +83,8 @@ public class Register extends AppCompatActivity {
                                 */
 
                                 RegisterModel registerModel = new RegisterModel();
-                                registerModel.setName(sName);
-                                registerModel.setPhone(sPhone);
+                                registerModel.setName("");
+                                registerModel.setPhone("");
                                 registerModel.setUserid(userid);
                                 registerModel.setImgurl("");
                                 HashMap<String,String> hashMap = new HashMap<>();

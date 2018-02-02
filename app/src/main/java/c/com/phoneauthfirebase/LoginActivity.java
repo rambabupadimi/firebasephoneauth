@@ -1,4 +1,4 @@
-package com.example.ramu.chatfirebase;
+package c.com.phoneauthfirebase;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import c.com.phoneauthfirebase.models.RegisterModel;
 
 import static android.view.View.VISIBLE;
 
@@ -54,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
         loginPassword   =   (EditText) findViewById(R.id.login_password);
 
         loginUser       =   (Button) findViewById(R.id.login_user_button);
-        loginUserButtonTAB  =   (Button) findViewById(R.id.login_user);
         loginUserSection    =   (LinearLayout) findViewById(R.id.login_user_section);
 
 
@@ -97,18 +98,6 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-
-        loginUserButtonTAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginUserSection.setVisibility(VISIBLE);
-
-                loginUserButtonTAB.setBackgroundColor(Color.parseColor("#5ba8b7"));
-                loginUserButtonTAB.setTextColor(Color.WHITE);
-
-
-            }
-        });
 
 
     }

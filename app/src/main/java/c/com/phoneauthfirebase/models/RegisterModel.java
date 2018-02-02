@@ -1,7 +1,6 @@
-package com.example.ramu.chatfirebase;
+package c.com.phoneauthfirebase.models;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Ramu on 25-06-2017.

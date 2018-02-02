@@ -288,13 +288,47 @@
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:background="#FFF59D"
-           android:layout_marginTop="6dp">
+           android:layout_marginTop="6dp"
+           android:visibility="gone">
 
            <TextView
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:text="Your order sent,they will process slowly "
                android:padding="12dp"/>
+       </LinearLayout>
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <Button
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:text="PENDING"
+               android:id="@+id/button_pending"
+               android:textColor="@color/white"
+               android:background="@color/pending"/>
+
+           <Button
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:text="INPROGRESS"
+               android:id="@+id/button_inprogress"
+               android:textColor="@color/white"
+               android:background="@color/inprogress"/>
+
+           <Button
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:text="COMPLETED"
+               android:id="@+id/button_completed"
+               android:textColor="@color/white"
+               android:background="@color/completed"/>
+
        </LinearLayout>
 
        <!--

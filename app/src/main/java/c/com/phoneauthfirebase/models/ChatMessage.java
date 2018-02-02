@@ -1,4 +1,4 @@
-package com.example.ramu.chatfirebase;
+package c.com.phoneauthfirebase.models;
 
 /**
  * Created by user on 01-05-2017.

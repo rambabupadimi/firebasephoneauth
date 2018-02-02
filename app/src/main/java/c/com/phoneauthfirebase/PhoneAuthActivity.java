@@ -144,7 +144,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            startActivity(new Intent(PhoneAuthActivity.this, MainActivity.class));
+            startActivity(new Intent(PhoneAuthActivity.this, UploadImage.class));
             finish();
         }
     }

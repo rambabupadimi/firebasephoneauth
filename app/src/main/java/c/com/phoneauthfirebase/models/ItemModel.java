@@ -4,10 +4,19 @@ package c.com.phoneauthfirebase.models;
  * Created by Ramu on 05-12-2017.
  */
 
-public class Item {
+public class ItemModel {
 
     private String name,description;
-    private int cost,price;
+    private int quantity,price;
+
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public String getName() {
         return name;
@@ -25,13 +34,6 @@ public class Item {
         this.description = description;
     }
 
-    public int getCost() {
-        return cost;
-    }
-
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
 
     public int getPrice() {
         return price;

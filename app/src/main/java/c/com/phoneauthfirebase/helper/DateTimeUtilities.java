@@ -1,7 +1,6 @@
-package c.com.ecomerceuser.helper;
+package c.com.phoneauthfirebase.helper;
 
 
-import android.text.format.DateUtils;
 import android.util.Log;
 
 import java.text.DateFormatSymbols;

@@ -1,6 +1,5 @@
-package com.example.ramu.chatfirebase;
+package c.com.phoneauthfirebase;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.HapticFeedbackConstants;
@@ -12,6 +11,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import c.com.phoneauthfirebase.helper.DateTimeUtilities;
+import c.com.phoneauthfirebase.models.ChatMessage;
+
 /**
  * Created by user on 07-05-2017.
  */
@@ -21,12 +23,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     String senderId;
     private SparseBooleanArray selectedItems;
     private static int currentSelectedIndex = -1;
+    public static int itemPositionInAdapter=0;
 
     private ChatListAdapterListener listener;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView messageLeft,messageRight,messageLeftTime,messageRightTime;
         LinearLayout leftLayout,rightLayout;
+        LinearLayout dateAndTimeLayout;
+        TextView dateAndTimeTextview;
+
 
         public MyViewHolder(View view) {
             super(view);
@@ -36,17 +42,29 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
             messageLeftTime =  (TextView) view.findViewById(R.id.send_time_left);
             messageRight =  (TextView) view.findViewById(R.id.message_right);
             messageRightTime =  (TextView) view.findViewById(R.id.send_time_right);
+
+
+            dateAndTimeLayout   = (LinearLayout) itemView.findViewById(R.id.date_and_time_chat_layout);
+            dateAndTimeTextview = (TextView) itemView.findViewById(R.id.date_and_time_bubble);
+            dateAndTimeLayout.setEnabled(false);
+            dateAndTimeLayout.setClickable(false);
+
         }
     }
 
 
-    public ChatAdapter(List<ChatMessage> chatMessageList,String senderId,ChatListAdapterListener listener) {
+    public ChatAdapter(List<ChatMessage> chatMessageList, String senderId, ChatListAdapterListener listener) {
         this.chatMessageList = chatMessageList;
         this.senderId = senderId;
         this.listener = listener;
         selectedItems       =   new SparseBooleanArray();
 
     }
+    public  ChatMessage getItemScrolledPosition()
+    {
+        return chatMessageList.get(itemPositionInAdapter);
+    }
+
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -59,6 +77,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
+        itemPositionInAdapter = position;
         ChatMessage chatMessage =chatMessageList.get(position);
         if(chatMessage.getSenderId().toString().equalsIgnoreCase(senderId))
         {
@@ -66,14 +85,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
             holder.rightLayout.setVisibility(View.VISIBLE);
             holder.leftLayout.setVisibility(View.GONE);
             holder.messageRight.setText(chatMessage.getMessage());
-            holder.messageRightTime.setText(chatMessage.getSent_time());
+            holder.messageRightTime.setText(chatMessage.getSent_time().split(" ")[1] + chatMessage.getSent_time().split(" ")[2]);
         }
          else
         {
             holder.rightLayout.setVisibility(View.GONE);
             holder.leftLayout.setVisibility(View.VISIBLE);
             holder.messageLeft.setText(chatMessage.getMessage());
-            holder.messageLeftTime.setText(chatMessage.getSent_time());
+            holder.messageLeftTime.setText(chatMessage.getSent_time().split(" ")[1] + chatMessage.getSent_time().split(" ")[2]);
         }
 
         holder.itemView.setActivated(selectedItems.get(position, false));
@@ -84,6 +103,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
                 listener.onMessageRowClicked(position);
             }
         });
+
+        showDateAndTimeLayout(holder,chatMessageList,position);
 
         holder.rightLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -146,6 +167,67 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
         void onRowLongClicked(int position);
     }
+
+
+    private void showDateAndTimeLayout(MyViewHolder holder,List<ChatMessage> chatMessageEntityList,int position)
+    {
+        if(chatMessageEntityList!=null && chatMessageEntityList.size()>0)
+        {
+            if(position==0)
+            {
+
+
+                String prevTime = chatMessageEntityList.get(position).getSent_time();
+                String prevDate = prevTime.split(" ")[0];
+                holder.dateAndTimeLayout.setVisibility(View.VISIBLE);
+                holder.dateAndTimeLayout.setActivated(false);
+                if(prevDate.equalsIgnoreCase(DateTimeUtilities.getCurrentOnlyDate()))
+                {
+                    holder.dateAndTimeTextview.setText("TODAY");
+                }
+/*
+                else if(prevDate.equalsIgnoreCase(DateTimeUtilities.getYesterdayDate()))
+                {
+                    holder.dateAndTimeTextview.setText(" YESTERDAY ");
+                }
+*/
+                else {
+                    holder.dateAndTimeTextview.setText(DateTimeUtilities.getConvertedTime(prevDate));
+                }
+            }
+            if(position>0)
+            {
+                String prevTime = chatMessageEntityList.get(position-1).getSent_time();
+                String prevDate =prevTime.split(" ")[0];
+
+                String currentTime = chatMessageEntityList.get(position).getSent_time();
+                String currentDate  = currentTime.split(" ")[0];
+                if(!prevDate.toString().equalsIgnoreCase(currentDate))
+                {
+                    holder.dateAndTimeLayout.setVisibility(View.VISIBLE);
+                    if(currentDate.equalsIgnoreCase(DateTimeUtilities.getCurrentOnlyDate()))
+                    {
+                        holder.dateAndTimeTextview.setText("TODAY");
+                    }
+/*
+                    else if(currentDate.equalsIgnoreCase(DateTimeUtilities.getYesterdayDate()))
+                    {
+                        holder.dateAndTimeTextview.setText("YESTERDAY");
+                    }
+*/
+                    else {
+                        holder.dateAndTimeTextview.setText(DateTimeUtilities.getConvertedTime(currentDate));
+                    }
+                }
+                else
+                {
+                    holder.dateAndTimeLayout.setVisibility(View.GONE);
+                }
+            }
+
+        }
+    }
+
 
 
 }
