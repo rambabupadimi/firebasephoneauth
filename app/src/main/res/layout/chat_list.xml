@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+
+<android.support.v7.widget.CardView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="6dp"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="#9FA8DA"
+    >
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="12dp"
+      android:id="@+id/message_layout_left">
+    <com.vanniktech.emoji.EmojiTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Message"
+        android:textColor="#fff"
+        android:id="@+id/message_left"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/send_time_left"
+        android:text="2017-11-11"
+        android:textSize="10sp"
+        android:textColor="#fff"/>
+  </LinearLayout>
+</android.support.v7.widget.CardView>
+
+  <android.support.v7.widget.CardView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:cardCornerRadius="6dp"
+      app:cardUseCompatPadding="true"
+      app:cardBackgroundColor="#FF7043"
+      android:layout_gravity="right"
+    android:background="@drawable/state_list_item_background"
+      >
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="12dp"
+      android:id="@+id/message_layout_right">
+    <com.vanniktech.emoji.EmojiTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Message"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        android:id="@+id/message_right"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/send_time_right"
+        android:textColor="#fff"
+        android:text="2017-11-11"
+        android:textSize="10sp" />
+  </LinearLayout>
+</android.support.v7.widget.CardView>
+
+</LinearLayout>
