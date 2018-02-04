@@ -7,24 +7,43 @@ android:background="@color/grey_100"
 android:orientation="vertical"
     >
 
+ <android.support.v7.widget.Toolbar
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:background="@color/colorPrimary"
+     android:id="@+id/toolbar">
+
+     <TextView
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="Add Category"
+         android:textColor="@color/white"/>
+
+ </android.support.v7.widget.Toolbar>
+
+
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
     android:layout_margin="24dp"
+    android:layout_below="@+id/toolbar"
     >
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:id="@+id/group_title"
+        android:padding="12dp"
+        android:background="@drawable/rectangle"
         />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="SAVE"
+        android:text="Add Category"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
         android:background="@color/colorPrimary"
         android:textColor="#fff"
         android:id="@+id/group_save"

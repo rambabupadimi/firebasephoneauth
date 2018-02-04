@@ -23,7 +23,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import c.com.phoneauthfirebase.MainActivity;
 import c.com.phoneauthfirebase.R;
@@ -161,7 +163,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Cust
         Log.i("tag","data value is of"+orderModel.getName());
 
         Query query = databaseReference.orderByChild(firebaseUser.getUid());
-        query.addValueEventListener(new ValueEventListener() {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -170,6 +172,22 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Cust
                     Log.i("tag","data v key is"+dataSnapshot1.getKey());
                     Log.i("tag","data v value is"+dataSnapshot1.getValue());
 
+                    Log.i("tag","data v value one is"+dataSnapshot1.getChildren());
+                    Log.i("tag","data v value two is"+dataSnapshot1.getChildrenCount());
+
+                    for(DataSnapshot dataSnapshot2:dataSnapshot1.getChildren())
+                    {
+                        Log.i("tag","data v value three key is"+dataSnapshot2.getKey());
+                        Log.i("tag","data v value three value is"+dataSnapshot2.getValue());
+
+                        if(orderModel.getKeyIs().toString().equalsIgnoreCase(dataSnapshot2.getKey()))
+                        {
+                            Log.i("tag","test checking");
+                            dataSnapshot2.getRef().child("orderStatus").setValue(val);
+                            return;
+                        }
+
+                    }
 
 /*
                     for(DataSnapshot dataSnapshot2:dataSnapshot1.getChildren()) {

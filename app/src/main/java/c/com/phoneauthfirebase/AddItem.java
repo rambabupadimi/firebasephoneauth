@@ -3,6 +3,8 @@ package c.com.phoneauthfirebase;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,7 +33,8 @@ public class AddItem extends AppCompatActivity {
 
     @InjectView(R.id.itemSave)
     Button itemSave;
-
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
 
     private DatabaseReference databaseReference;
     private FirebaseDatabase firebaseDatabase;
@@ -44,6 +47,8 @@ public class AddItem extends AppCompatActivity {
         ButterKnife.inject(this);
         initialiseIDS();
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
        final String id = getIntent().getStringExtra("id");
 
         itemSave.setOnClickListener(new View.OnClickListener() {
@@ -92,5 +97,13 @@ public class AddItem extends AppCompatActivity {
     {
         firebaseDatabase    =   FirebaseDatabase.getInstance();
         databaseReference   =  firebaseDatabase.getReference().child("Item");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId()== android.R.id.home)
+            finish();
+        return super.onOptionsItemSelected(item);
     }
 }

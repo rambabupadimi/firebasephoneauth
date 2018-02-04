@@ -45,11 +45,10 @@ public class Item extends AppCompatActivity {
     RecyclerView itemRecyclerView;
 
 
+
     private DatabaseReference databaseReference;
     private FirebaseDatabase firebaseDatabase;
     int count=0;
-
-     ArrayList<StoreOrder> cartList = new ArrayList<>();
 
      SearchView searchView;
      Toolbar itemToolbar;
@@ -89,9 +88,9 @@ public class Item extends AppCompatActivity {
 
             }
         });
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        itemRecyclerView.setLayoutManager(linearLayoutManager); // set LayoutManager to RecyclerView
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),2);
+        gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL); // set Horizontal Orientation
+        itemRecyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
 searchRecyclerview("");
 
     }
@@ -132,78 +131,12 @@ searchRecyclerview("");
 
                 count=0;
                 viewHolder.setName(model.getName());
-                viewHolder.setQuantity(""+model.getQuantity());
                 viewHolder.setCost(""+model.getPrice());
-
+                viewHolder.setQuantity(""+model.getQuantity());
             }
         };
         itemRecyclerView.setAdapter(firebaseRecyclerAdapter);
 
-    }
-
-
-    /*
-    private void updateCart()
-    {
-        if(cartList!=null)
-             cartCout.setText(""+cartList.size());
-        Gson gson = new Gson();
-        Log.i("tag","array is"+gson.toJson(cartList));
-
-    }
-*/
-    private void addCartItemToList(StoreOrder storeOrder)
-    {
-
-        if(storeOrder!=null)
-        {
-            // check if oredermodel already exists or not, it its remove and insert
-            // else directly insert to list
-
-            if(isExistsOrNot(storeOrder)) {
-
-            }
-            else
-            {
-                if (cartList != null)
-                    cartList.add(storeOrder);
-            }
-        }
-    }
-
-    private boolean  isExistsOrNot(StoreOrder storeOrder)
-    {
-        if(cartList!=null && cartList.size()>0)
-        {
-            for(int i=0;i<cartList.size();i++)
-            {
-                StoreOrder storeOrder1 = cartList.get(i);
-                if(storeOrder.getPosition() == storeOrder1.getPosition())
-                {
-
-                    cartList.remove(storeOrder1);
-                    cartList.add(storeOrder);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private void  removeCartItemFromList(StoreOrder storeOrder)
-    {
-        if(cartList!=null && cartList.size()>0)
-        {
-            for(int i=0;i<cartList.size();i++)
-            {
-                StoreOrder storeOrder1 = cartList.get(i);
-                if(storeOrder.getPosition() == storeOrder1.getPosition())
-                {
-                    cartList.remove(storeOrder1);
-                    return;
-                }
-            }
-        }
     }
 
 
@@ -230,9 +163,10 @@ searchRecyclerview("");
 
         public void setQuantity(String quantity)
         {
-            TextView quantityTextView =  (TextView) mview.findViewById(R.id.adapter_item_quantity);
-            quantityTextView.setText("Qty : "+quantity);
+            TextView costTextView =  (TextView) mview.findViewById(R.id.adapter_item_quantity);
+            costTextView.setText("Qty: "+quantity);
         }
+
 
     }
 
@@ -264,5 +198,13 @@ searchRecyclerview("");
         });
         return true;
 
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+       if(item.getItemId()== android.R.id.home)
+           finish();
+        return super.onOptionsItemSelected(item);
     }
 }

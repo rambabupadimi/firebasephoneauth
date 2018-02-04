@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import butterknife.ButterKnife;
@@ -32,18 +35,14 @@ public class Group extends AppCompatActivity {
 
     @InjectView(R.id.group_recyclerview)
     RecyclerView groupRecyclerView;
-
-
-    private DatabaseReference databaseReference;
-    private FirebaseDatabase firebaseDatabase;
-
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group);
+        setContentView(R.layout.activity_main_group);
         ButterKnife.inject(this);
-        initialiseIDS();
 
         addGroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,40 +52,38 @@ public class Group extends AppCompatActivity {
             }
         });
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        searchRecyclerview("");
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),2);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL); // set Horizontal Orientation
         groupRecyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
 
     }
 
-    private void initialiseIDS()
-    {
-        firebaseDatabase    =   FirebaseDatabase.getInstance();
-        databaseReference   =  firebaseDatabase.getReference().child("Group");
-    }
+
+
+
 
     @Override
     public void onStart() {
         super.onStart();
 
+    }
+
+
+    private void searchRecyclerview(String s)
+    {
+        Query databaseReference2;
+        if(s.length()>0)
+            databaseReference2=   FirebaseDatabase.getInstance().getReference().child("Group").orderByChild("name").startAt(s).endAt(s+"\uF8FF");
+        else
+            databaseReference2=   FirebaseDatabase.getInstance().getReference().child("Group");
         final FirebaseRecyclerAdapter<GroupModel,GroupViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<GroupModel, GroupViewHolder>(
                 GroupModel.class,
                 R.layout.group_adapter_layout,
                 GroupViewHolder.class,
-                databaseReference
+                databaseReference2
         ) {
             @Override
             protected void populateViewHolder(GroupViewHolder viewHolder, final GroupModel model, final int position) {
@@ -106,31 +103,38 @@ public class Group extends AppCompatActivity {
             }
         };
         groupRecyclerView.setAdapter(firebaseRecyclerAdapter);
+
     }
 
-
-
-public static class GroupViewHolder extends RecyclerView.ViewHolder
-{
-
-    View mview;
-    public GroupViewHolder(View itemView) {
-        super(itemView);
-        mview = itemView;
-    }
-
-    public void setName(String title)
+    public static class GroupViewHolder extends RecyclerView.ViewHolder
     {
-        TextView titleTextView =  (TextView) mview.findViewById(R.id.adapter_group_title);
-        titleTextView.setText(""+title);
+
+        View mview;
+        public GroupViewHolder(View itemView) {
+            super(itemView);
+            mview = itemView;
+        }
+
+        public void setName(String title)
+        {
+            TextView titleTextView =  (TextView) mview.findViewById(R.id.adapter_group_title);
+            titleTextView.setText(""+title);
+        }
+
+        public void setDescription(String description)
+        {
+            TextView descriptionTextView  = (TextView) mview.findViewById(R.id.adapter_group_description);
+            descriptionTextView.setText(description);
+        }
+
+
     }
 
-    public void setDescription(String description)
-    {
-        TextView descriptionTextView  = (TextView) mview.findViewById(R.id.adapter_group_description);
-        descriptionTextView.setText(description);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home)
+            finish();
+
+        return super.onOptionsItemSelected(item);
     }
-
-
-}
 }

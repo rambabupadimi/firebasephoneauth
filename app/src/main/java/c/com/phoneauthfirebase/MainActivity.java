@@ -7,6 +7,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,15 +49,11 @@ public class MainActivity extends AppCompatActivity {
     ImageView profileImage;
     TextView profileName;
 
-    FloatingActionButton addGroup;
-
-    RecyclerView groupRecyclerView;
-
-    DatabaseReference databaseReference1;
-    FirebaseDatabase firebaseDatabase1;
 
     Toolbar toolbar;
 
+
+    CardView addBanners,addCategories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,15 +64,17 @@ public class MainActivity extends AppCompatActivity {
         View header = navigationView.getHeaderView(0);
         profileImage    = (ImageView) header.findViewById(R.id.profile_image);
         profileName    = (TextView) header.findViewById(R.id.profileName);
-        addGroup = (FloatingActionButton) findViewById(R.id.add_group);
-        groupRecyclerView = (RecyclerView) findViewById(R.id.group_recyclerview);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+
+        addBanners  = (CardView) findViewById(R.id.add_banners);
+        addCategories = (CardView) findViewById(R.id.add_categories);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         FirebaseAuth   mAuth   =   FirebaseAuth.getInstance();
 
-Log.i("tag","auth value is"+mAuth);
+        Log.i("tag","auth value is"+mAuth);
         String uid = mAuth.getUid();
         Log.i("tag","auth value id"+uid);
 
@@ -86,8 +85,6 @@ Log.i("tag","auth value is"+mAuth);
             startActivity(intent);
         }
         else {
-
-
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().
                     getReference().child("Admin").child(uid);
             databaseReference.keepSynced(true);
@@ -129,48 +126,29 @@ Log.i("tag","auth value is"+mAuth);
             });
 
 
-            addGroup.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Intent intent = new Intent(MainActivity.this, Group.class);
-                    startActivity(intent);
-                }
-            });
 
 
             initNavigationDrawer();
 
 
-            addGroup.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this,AddGroup.class);
-                    startActivity(intent);
-                }
-            });
 
-            firebaseDatabase1    =   FirebaseDatabase.getInstance();
-            databaseReference1   =  firebaseDatabase1.getReference().child("Group");
-
-            databaseReference1.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-            searchRecyclerview("");
-     //       loadRecyclerview();
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),2);
-            gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL); // set Horizontal Orientation
-            groupRecyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
 
         }
+
+        addCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =  new Intent(MainActivity.this,Group.class);
+                startActivity(intent);
+            }
+        });
+
+        addBanners.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
 
@@ -256,59 +234,6 @@ Log.i("tag","auth value is"+mAuth);
 
     }
 
-    private void loadRecyclerview()
-    {
-        final FirebaseRecyclerAdapter<GroupModel,GroupViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<GroupModel, GroupViewHolder>(
-                GroupModel.class,
-                R.layout.group_adapter_layout,
-               GroupViewHolder.class,
-                databaseReference1
-        ) {
-            @Override
-            protected void populateViewHolder(GroupViewHolder viewHolder, final GroupModel model, final int position) {
-                viewHolder.setName(model.getName());
-                viewHolder.setDescription(model.getDescription());
-                viewHolder.mview.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String keyis = getRef(position).getKey();
-                        Log.i("tag","key is"+keyis);
-                        Intent intent = new Intent(MainActivity.this,Item.class);
-                        intent.putExtra("id",keyis);
-                        startActivity(intent);
-
-                    }
-                });
-            }
-        };
-        groupRecyclerView.setAdapter(firebaseRecyclerAdapter);
-
-    }
-
-
-    public static class GroupViewHolder extends RecyclerView.ViewHolder
-    {
-
-        View mview;
-        public GroupViewHolder(View itemView) {
-            super(itemView);
-            mview = itemView;
-        }
-
-        public void setName(String title)
-        {
-            TextView titleTextView =  (TextView) mview.findViewById(R.id.adapter_group_title);
-            titleTextView.setText(""+title);
-        }
-
-        public void setDescription(String description)
-        {
-            TextView descriptionTextView  = (TextView) mview.findViewById(R.id.adapter_group_description);
-            descriptionTextView.setText(description);
-        }
-
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -332,7 +257,7 @@ Log.i("tag","auth value is"+mAuth);
             public boolean onQueryTextChange(String s) {
                 // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
 
-                searchRecyclerview(s);
+               // searchRecyclerview(s);
                 return true;
             }
         });
@@ -340,39 +265,6 @@ Log.i("tag","auth value is"+mAuth);
 
     }
 
-    private void searchRecyclerview(String s)
-    {
-        Query databaseReference2;
-        if(s.length()>0)
-            databaseReference2=   FirebaseDatabase.getInstance().getReference().child("Group").orderByChild("name").startAt(s).endAt(s+"\uF8FF");
-        else
-            databaseReference2=   FirebaseDatabase.getInstance().getReference().child("Group");
-        final FirebaseRecyclerAdapter<GroupModel,GroupViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<GroupModel, GroupViewHolder>(
-                GroupModel.class,
-                R.layout.group_adapter_layout,
-                GroupViewHolder.class,
-                databaseReference2
-        ) {
-            @Override
-            protected void populateViewHolder(GroupViewHolder viewHolder, final GroupModel model, final int position) {
-                viewHolder.setName(model.getName());
-                viewHolder.setDescription(model.getDescription());
-                viewHolder.mview.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String keyis = getRef(position).getKey();
-                        Log.i("tag","key is"+keyis);
-                        Intent intent = new Intent(MainActivity.this,Item.class);
-                        intent.putExtra("id",keyis);
-                        startActivity(intent);
-
-                    }
-                });
-            }
-        };
-        groupRecyclerView.setAdapter(firebaseRecyclerAdapter);
-
-    }
 
 }
 

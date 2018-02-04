@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,7 +26,8 @@ public class AddGroup extends AppCompatActivity {
 
     @InjectView(R.id.group_save)
     Button groupSave;
-
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
 
     private DatabaseReference databaseReference;
     private FirebaseDatabase firebaseDatabase;
@@ -36,6 +39,9 @@ public class AddGroup extends AppCompatActivity {
         ButterKnife.inject(this);
 
         initialiseIDS();
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         groupSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,5 +64,13 @@ public class AddGroup extends AppCompatActivity {
     {
         firebaseDatabase    =   FirebaseDatabase.getInstance();
         databaseReference   =  firebaseDatabase.getReference().child("Group");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home)
+            finish();
+
+        return super.onOptionsItemSelected(item);
     }
 }

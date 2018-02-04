@@ -2,40 +2,71 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:id="@+id/toolbar">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Product"
+            android:textColor="@color/white"/>
+
+    </android.support.v7.widget.Toolbar>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_margin="12dp">
-
-
+    android:layout_margin="6dp">
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Item Name"
-        android:id="@+id/itemName"/>
+        android:id="@+id/itemName"
+        android:background="@drawable/rectangle"
+        android:padding="12dp"
+        android:layout_margin="2dp"/>
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:hint="Item Description"
-        android:id="@+id/itemDescription"/>
+        android:gravity="top"
+        android:id="@+id/itemDescription"
+        android:background="@drawable/rectangle"
+        android:padding="12dp"
+        android:layout_margin="2dp"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Price"
         android:inputType="number"
-        android:id="@+id/itemPrice"/>
+        android:id="@+id/itemPrice"
+        android:background="@drawable/rectangle"
+        android:padding="12dp"
+        android:layout_margin="2dp"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Quantity"
         android:inputType="number"
-        android:id="@+id/itemQuantity"/>
+        android:id="@+id/itemQuantity"
+        android:background="@drawable/rectangle"
+        android:padding="12dp"
+        android:layout_margin="2dp"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:background="@color/colorPrimary"
-        android:text="SAVE"
+        android:text="ADD ITEM"
         android:id="@+id/itemSave"
         android:textColor="#fff"/>
+</LinearLayout>
 </LinearLayout>

@@ -1,6 +1,7 @@
 package c.com.phoneauthfirebase;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.NavigationMenu;
@@ -15,6 +16,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -48,8 +51,9 @@ public class ShowOrdersList extends AppCompatActivity {
 
     Bundle bundle;
     Toolbar toolbar;
-Gson gson;
+    Gson gson;
 
+    int maincount=0;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -61,19 +65,23 @@ Gson gson;
                     getDataFromDB();
                     setFragment(pendingFragment);
                     toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
+                    changeStatusColor(getResources().getColor(R.color.colorPrimary));
                     return true;
                 case R.id.navigation_dashboard:
                     mTextMessage.setText("INPROGRESS");
                     getDataFromDB();
                     setFragment(inprogressFragment);
                     toolbar.setBackgroundColor(getResources().getColor(R.color.inprogress));
+                    changeStatusColor(getResources().getColor(R.color.inprogress));
+
                     return true;
                 case R.id.navigation_notifications:
                     getDataFromDB();
                     setFragment(completedFragment);
                     mTextMessage.setText("COMPLETED");
                     toolbar.setBackgroundColor(getResources().getColor(R.color.completed));
+                    changeStatusColor(getResources().getColor(R.color.completed));
+
                     return true;
             }
             return false;
@@ -82,11 +90,21 @@ Gson gson;
 
     private void setFragment(Fragment fragment)
     {if(bundle!=null) {
+        Log.i("tag","get arguments"+fragment.getArguments());
         fragment.setArguments(bundle);
         FragmentTransaction fragmentManager = getSupportFragmentManager().beginTransaction();
         fragmentManager.replace(R.id.main_frag, fragment);
         fragmentManager.commit();
     }
+    }
+
+    private void changeStatusColor(int color)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(color);
+        }
     }
 
     @Override
@@ -103,17 +121,23 @@ Gson gson;
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.getMenu().findItem(R.id.navigation_home).setChecked(true);
 
+/*
 
         mTextMessage.setText("PENDING");
         getDataFromDB();
         setFragment(pendingFragment);
+*/
+
+
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
         gson = new Gson();
     }
+
 
 
     @Override
@@ -136,6 +160,10 @@ Gson gson;
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot!=null && dataSnapshot.getChildrenCount()>0)
                 {
+                    maincount++;
+                   ArrayList<ArrayList<OrderModel>> orderModelPendingListMain = new ArrayList<>();
+                   ArrayList<ArrayList<OrderModel>> orderModelInprogressListMain = new ArrayList<>();
+                   ArrayList<ArrayList<OrderModel>> orderModelCompletedListMain = new ArrayList<>();
                     int count=0;
                     for(DataSnapshot ds:dataSnapshot.getChildren())
                     {
@@ -183,6 +211,16 @@ Gson gson;
 
                         }
 
+
+                        orderModelCompletedListMain.add(orderModelCompletedList);
+                        orderModelInprogressListMain.add(orderModelInprogressList);
+                        orderModelPendingListMain.add(orderModelPendingList);
+
+
+
+                        Log.i("tag","completed comp list"+gson.toJson(orderModelCompletedListMain));
+                        Log.i("tag","completed inpro list"+gson.toJson(orderModelInprogressListMain));
+                        Log.i("tag","completed pending list"+gson.toJson(orderModelPendingListMain));
                     }
 
                 }

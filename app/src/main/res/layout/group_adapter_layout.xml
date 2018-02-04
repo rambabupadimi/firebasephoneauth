@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
-   android:background="#dddddd"
-    android:orientation="vertical"
-    android:layout_margin="12dp"
-    android:gravity="center"
 
+    android:background="#fff"
+    android:orientation="vertical"
+    android:layout_margin="1dp"
+    android:gravity="center"
+    android:padding="12dp"
     >
 
 
@@ -21,13 +21,14 @@
         android:layout_height="wrap_content"
         android:text="Title"
         android:textColor="#000000"
-        android:padding="6dp"
+        android:padding="12dp"
         android:id="@+id/adapter_group_title"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="6dp"
         android:text="Desc"
+        android:visibility="gone"
         android:textColor="#000000"
         android:id="@+id/adapter_group_description"/>
 </LinearLayout>
