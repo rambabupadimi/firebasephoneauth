@@ -33,6 +33,7 @@ public class AddItem extends AppCompatActivity {
 
     @InjectView(R.id.itemSave)
     Button itemSave;
+
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
 

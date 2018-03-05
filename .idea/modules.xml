@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PhoneAuthFirebase.iml" filepath="$PROJECT_DIR$/PhoneAuthFirebase.iml" />
+      <module fileurl="file://C:\Users\PCCS-0007\Desktop\todo-dagger\firebasephoneauth\PhoneAuthFirebase.iml" filepath="C:\Users\PCCS-0007\Desktop\todo-dagger\firebasephoneauth\PhoneAuthFirebase.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\PCCS-0007\Desktop\todo-dagger\firebasephoneauth\app\app.iml" filepath="C:\Users\PCCS-0007\Desktop\todo-dagger\firebasephoneauth\app\app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/firebasephoneauth.iml" filepath="$PROJECT_DIR$/.idea/firebasephoneauth.iml" />
     </modules>
   </component>
 </project>

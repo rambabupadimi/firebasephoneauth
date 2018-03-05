@@ -60,18 +60,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        View header = navigationView.getHeaderView(0);
-        profileImage    = (ImageView) header.findViewById(R.id.profile_image);
-        profileName    = (TextView) header.findViewById(R.id.profileName);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        initialiseIDS();
+        initialiseToolbar();
+        initialiseNaviagationImage();
+        initialiseClickListeners();
 
+    }
 
-        addBanners  = (CardView) findViewById(R.id.add_banners);
-        addCategories = (CardView) findViewById(R.id.add_categories);
+    private void initialiseClickListeners()
+    {
+        addCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =  new Intent(MainActivity.this,Group.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        addBanners.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+    private void initialiseNaviagationImage()
+    {
         FirebaseAuth   mAuth   =   FirebaseAuth.getInstance();
 
         Log.i("tag","auth value is"+mAuth);
@@ -125,32 +140,31 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-
-
-
             initNavigationDrawer();
-
-
-
 
         }
 
-        addCategories.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent =  new Intent(MainActivity.this,Group.class);
-                startActivity(intent);
-            }
-        });
-
-        addBanners.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
+    private void initialiseIDS()
+    {
+
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        View header = navigationView.getHeaderView(0);
+        profileImage    = (ImageView) header.findViewById(R.id.profile_image);
+        profileName    = (TextView) header.findViewById(R.id.profileName);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        addBanners  = (CardView) findViewById(R.id.add_banners);
+        addCategories = (CardView) findViewById(R.id.add_categories);
+
+    }
+
+    private void initialiseToolbar()
+    {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+    }
 
     public void initNavigationDrawer() {
 
